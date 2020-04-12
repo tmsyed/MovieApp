@@ -5,6 +5,7 @@ import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -26,79 +27,127 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
+//Description: Handles first screen where user can search for a movie and select from
+//the various options shown
 public class MainActivity extends AppCompatActivity {
 
-    private String movieTitle;
-    private RequestQueue requestQueue;
-    private EditText searchBar;
-    private JSONArray resultList; //search results
+    //Shared Preference file info
+    private SharedPreferences mPreferences;
+    private String sharedPrefFile = "com.example.movieapp";
+    private final String TITLE_KEY = "title"; //used to restore last searched term when view is
+    //destroyed
 
-    private MovieAdapter movieAdapter;
-    private ArrayList<Movie> moviesList = new ArrayList<>();
+    private String movieTitle;  //Used as parameter in web request to search for movies
+
+    private RequestQueue requestQueue;  //Volley request queue
+    private EditText searchBar; //user enters movie name here
+
+    private MovieAdapter movieAdapter;  //adapter for movie RecyclerView
+    private ArrayList<Movie> moviesList = new ArrayList<>();  //stores the Movie objects
     private RecyclerView recyclerView;
 
+    //Description: RecyclerView set up here
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        mPreferences = getSharedPreferences(sharedPrefFile, MODE_PRIVATE);
+
         searchBar = findViewById(R.id.movie_search);
+
+        //Restoring search term from shared preferences file
+        movieTitle = mPreferences.getString(TITLE_KEY, "");
+        searchBar.setText(movieTitle);
+
+        //Setting up the actual RecyclerView
         recyclerView = findViewById(R.id.movie_list);
         movieAdapter = new MovieAdapter(moviesList, this);
         recyclerView.setAdapter(movieAdapter);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         linearLayoutManager.setOrientation(RecyclerView.VERTICAL);
         recyclerView.setLayoutManager(linearLayoutManager);
+
+        //Used as a divider between entries in the RecyclerView
         DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(
                 recyclerView.getContext(), linearLayoutManager.getOrientation()
         );
         recyclerView.addItemDecoration(dividerItemDecoration);
 
-        movieTitle = "Spider-man";
+        //initializing request queue
         requestQueue = Volley.newRequestQueue(this);
     }
 
+    //Used for saving search term to shared preferences file
+    @Override
+    protected void onPause() {
+        super.onPause();
+
+        SharedPreferences.Editor editor = mPreferences.edit();
+        editor.putString(TITLE_KEY, movieTitle);
+        editor.apply();
+    }
+
+    //onClick handler for the search button
     public void SearchMovies(View view) {
         movieTitle = searchBar.getText().toString();
-        if(!movieTitle.matches("")) {
-            JsonObjectRequest jsonObjectRequest =
-                    new JsonObjectRequest(
-                            Request.Method.GET,
-                            "https://www.omdbapi.com/?apikey=ccc94984&s=" + movieTitle,
-                            null,
-                            new Response.Listener<JSONObject>() {
-                                @Override
-                                public void onResponse(JSONObject response) {
-                                    Log.i("JSON response", response.toString());
-                                    try
-                                    {
-                                        JSONArray jsonArray = response.getJSONArray("Search");
-                                        for(int i = 0; i < jsonArray.length(); i++) {
-                                            JSONObject jsonObject = jsonArray.getJSONObject(i);
-                                            String tempURI = jsonObject.getString("Poster");
-                                            String tempTitle = jsonObject.getString("Title");
 
-                                            moviesList.add(new Movie(tempURI, tempTitle));
-                                        }
-                                        movieAdapter.notifyDataSetChanged();
-                                    }
-                                    catch (JSONException e) {
-                                        e.printStackTrace();
-                                    }
-                                }
-                            },
-                            new Response.ErrorListener() {
-                                @Override
-                                public void onErrorResponse(VolleyError error) {
-                                    Log.e("Request Error", error.toString());
-                                }
-                            }
-                    );
-            requestQueue.add(jsonObjectRequest);
-        }
-        else {
+        //So long as user actually typed in a search term, request movies from API
+        if (!movieTitle.matches("")) {
+            //Web request handled through separate thread
+            Thread thread = new Thread(new VolleyRequestThread());
+            thread.start();
+        } else {
             Toast.makeText(this, "Please enter a movie name", Toast.LENGTH_SHORT).show();
         }
 
+    }
+
+    //Description: Thread that handles the Volley Request to the OMDb API
+    class VolleyRequestThread implements Runnable {
+        public void run() {
+            try {
+                JsonObjectRequest jsonObjectRequest =
+                        new JsonObjectRequest(
+                                Request.Method.GET,
+                                "https://www.omdbapi.com/?apikey=ccc94984&s=" + movieTitle,
+                                null,
+                                new Response.Listener<JSONObject>() {
+                                    @Override
+                                    public void onResponse(JSONObject response) {
+                                        Log.i("JSON response", response.toString());
+                                        try {
+                                            JSONArray jsonArray = response.getJSONArray("Search");
+                                            for (int i = 0; i < jsonArray.length(); i++) {
+                                                //The key data here is the movie title and poster
+                                                //image which will be displayed
+                                                JSONObject jsonObject = jsonArray.getJSONObject(i);
+                                                String tempURI = jsonObject.getString("Poster");
+                                                String tempTitle = jsonObject.getString("Title");
+
+                                                //Movie object stores relevant data for each movie
+                                                //The json object for the movie is passed along as well
+                                                //as it will be useful in the second activity
+                                                moviesList.add(new Movie(tempURI, tempTitle,
+                                                        jsonObject.toString()));
+                                            }
+                                            movieAdapter.notifyDataSetChanged();
+                                        } catch (JSONException e) {
+                                            e.printStackTrace();
+                                        }
+                                    }
+                                },
+                                new Response.ErrorListener() {
+                                    @Override
+                                    public void onErrorResponse(VolleyError error) {
+                                        Log.e("Request Error", error.toString());
+                                    }
+                                }
+                        );
+                requestQueue.add(jsonObjectRequest);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
     }
 }

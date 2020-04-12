@@ -38,8 +38,8 @@
         android:layout_marginTop="16dp"
         android:layout_marginEnd="16dp"
         android:layout_marginRight="16dp"
-        android:text="@android:string/search_go"
         android:onClick="SearchMovies"
+        android:text="@android:string/search_go"
         app:layout_constraintBaseline_toBaselineOf="@+id/movie_search"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/app_header" />
