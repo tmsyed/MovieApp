@@ -94,6 +94,7 @@ public class MainActivity extends AppCompatActivity {
 
         //So long as user actually typed in a search term, request movies from API
         if (!movieTitle.matches("")) {
+            moviesList.clear();
             //Web request handled through separate thread
             Thread thread = new Thread(new VolleyRequestThread());
             thread.start();
