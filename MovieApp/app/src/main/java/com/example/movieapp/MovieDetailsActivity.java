@@ -98,7 +98,7 @@ public class MovieDetailsActivity extends AppCompatActivity {
                                         try {
                                             //Parsing JSON response for relevant data
                                             String title = response.getString("Title") +
-                                                    "-" + response.getString("Year");
+                                                    " - " + response.getString("Year");
                                             String runtime = response.getString("Runtime");
                                             String rated = response.getString("Rated");
                                             String genre = response.getString("Genre");
@@ -112,13 +112,17 @@ public class MovieDetailsActivity extends AppCompatActivity {
                                             runtimeText.append(runtime);
                                             ratedText.append(rated);
                                             genreText.append(genre);
-                                            actorsText.append(actors);
+                                            actorsText.append("\n" + actors);
                                             imdbRatingText.append(imdbRating);
                                             overviewText.append("\n" + plot);
 
                                             //Picasso Library used as a way to set ImageView resource
                                             //to an online image
-                                            Picasso.get().load(poster).into(moviePoster);
+                                            if(poster.equals("N/A")){
+                                                moviePoster.setImageResource(R.drawable.not_avail);
+                                            }else{
+                                                Picasso.get().load(poster).into(moviePoster);
+                                            }
                                         } catch (JSONException e) {
                                             e.printStackTrace();
                                         }

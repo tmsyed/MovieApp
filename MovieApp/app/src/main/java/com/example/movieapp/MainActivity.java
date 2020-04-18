@@ -1,16 +1,23 @@
 package com.example.movieapp;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.SharedPreferences;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.view.animation.TranslateAnimation;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -41,6 +48,7 @@ public class MainActivity extends AppCompatActivity {
 
     private RequestQueue requestQueue;  //Volley request queue
     private EditText searchBar; //user enters movie name here
+    private Button searchButton;
 
     private MovieAdapter movieAdapter;  //adapter for movie RecyclerView
     private ArrayList<Movie> moviesList = new ArrayList<>();  //stores the Movie objects
@@ -55,6 +63,7 @@ public class MainActivity extends AppCompatActivity {
         mPreferences = getSharedPreferences(sharedPrefFile, MODE_PRIVATE);
 
         searchBar = findViewById(R.id.movie_search);
+        searchButton = findViewById(R.id.search_button);
 
         //Restoring search term from shared preferences file
         movieTitle = mPreferences.getString(TITLE_KEY, "");
@@ -72,6 +81,7 @@ public class MainActivity extends AppCompatActivity {
         DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(
                 recyclerView.getContext(), linearLayoutManager.getOrientation()
         );
+        dividerItemDecoration.setDrawable(ContextCompat.getDrawable(getBaseContext(), R.drawable.divider_dec));
         recyclerView.addItemDecoration(dividerItemDecoration);
 
         //initializing request queue

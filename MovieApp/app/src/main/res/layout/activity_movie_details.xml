@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#081C24"
     tools:context=".MovieDetailsActivity">
 
     <TextView
@@ -12,15 +13,20 @@
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="16dp"
+        android:fontFamily="sans-serif-condensed"
+        android:gravity="center"
         android:padding="10dp"
         android:text="Movie Title"
         android:textAppearance="@android:style/TextAppearance.DeviceDefault.Large"
+        android:textColor="#F8F8ED"
+        android:textSize="24sp"
         android:textStyle="bold" />
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/header">
+        android:layout_height="535dp"
+        android:layout_below="@id/header"
+        android:layout_marginTop="1dp">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -29,62 +35,87 @@
 
             <ImageView
                 android:id="@+id/poster"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:layout_height="382dp"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginEnd="6dip"
                 android:layout_marginRight="6dip"
                 android:contentDescription="Poster For Movie"
                 android:padding="8dp"
-                android:src="@drawable/ic_launcher_background" />
+                android:src="@drawable/ic_launcher_background"
+                app:srcCompat="@color/colorPrimary" />
 
             <TextView
                 android:id="@+id/imdb_score"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:fontFamily="sans-serif-condensed-light"
+                android:gravity="center"
                 android:padding="10dp"
                 android:text="IMDB: "
-                android:textAppearance="@android:style/TextAppearance.DeviceDefault" />
+                android:textAppearance="@android:style/TextAppearance.DeviceDefault"
+                android:textColor="#F8F8ED"
+                android:textSize="20sp" />
 
             <TextView
                 android:id="@+id/genre"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:fontFamily="sans-serif-condensed-light"
+                android:gravity="center"
                 android:lineSpacingExtra="5sp"
                 android:padding="10dp"
-                android:text="Genre: " />
+                android:text="Genre: "
+                android:textColor="#F8F8ED"
+                android:textSize="20sp" />
 
             <TextView
                 android:id="@+id/runtime"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:fontFamily="sans-serif-condensed-light"
+                android:gravity="center"
                 android:lineSpacingExtra="5sp"
                 android:padding="10dp"
-                android:text="Runtime: " />
+                android:text="Runtime: "
+                android:textColor="#F8F8ED"
+                android:textSize="20sp" />
 
             <TextView
                 android:id="@+id/rated"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:fontFamily="sans-serif-condensed-light"
+                android:gravity="center"
                 android:lineSpacingExtra="5sp"
                 android:padding="10dp"
-                android:text="Rated: " />
+                android:text="Rated: "
+                android:textColor="#F8F8ED"
+                android:textSize="20sp" />
 
             <TextView
                 android:id="@+id/overview"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:fontFamily="sans-serif-condensed-light"
+                android:gravity="center"
                 android:lineSpacingExtra="5sp"
                 android:padding="10dp"
-                android:text="Overview: " />
+                android:text="Overview "
+                android:textColor="#F8F8ED"
+                android:textSize="18sp" />
 
             <TextView
                 android:id="@+id/actors"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:fontFamily="sans-serif-condensed-light"
+                android:gravity="center"
                 android:lineSpacingExtra="5sp"
                 android:padding="10dp"
-                android:text="Actors: " />
+                android:text="Main Actors "
+                android:textColor="#F8F8ED"
+                android:textSize="18sp" />
 
 
         </LinearLayout>

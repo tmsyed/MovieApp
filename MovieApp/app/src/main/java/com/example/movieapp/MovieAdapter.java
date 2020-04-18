@@ -77,7 +77,11 @@ public class MovieAdapter extends
         //Using Picasso Library, the ImageView resource is set to an online image
         //URI is provided by OMDb API
         public void setMoviePoster(String uri) {
-            Picasso.get().load(uri).into(moviePoster);
+            if(uri.equals("N/A")){
+                moviePoster.setImageResource(R.drawable.not_avail);
+            }else{
+                Picasso.get().load(uri).into(moviePoster);
+            }
         }
 
         //When user clicks on an entry, a second activity with that movie's specific

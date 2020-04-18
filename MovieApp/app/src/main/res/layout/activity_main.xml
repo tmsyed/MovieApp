@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#081C24"
     tools:context=".MainActivity">
 
     <TextView
@@ -13,34 +14,37 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="16dp"
         android:text="@string/app_header"
-        android:textColor="#0A0A0A"
+        android:textColor="#F8F8ED"
         android:textSize="20sp" />
 
     <LinearLayout
         android:id="@+id/search_layout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="78dp"
         android:layout_below="@+id/app_header"
+        android:layout_marginTop="37dp"
         android:gravity="center_horizontal"
         android:orientation="horizontal">
 
         <EditText
             android:id="@+id/movie_search"
-            android:layout_width="wrap_content"
+            android:layout_width="247dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             android:hint="@string/search_hint"
-            android:inputType="text" />
+            android:inputType="text"
+            android:backgroundTint="@android:color/background_light"
+            android:textColor="@android:color/white"/>
 
         <Button
             android:id="@+id/search_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginLeft="8dp"
             android:layout_marginTop="16dp"
             android:layout_marginEnd="16dp"
             android:layout_marginRight="16dp"
-            android:layout_marginLeft="8dp"
-            android:layout_marginStart="8dp"
             android:onClick="SearchMovies"
             android:text="@android:string/search_go" />
 
@@ -49,9 +53,10 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/movie_list"
         android:layout_width="match_parent"
-        android:layout_below="@+id/search_layout"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
+        android:layout_below="@+id/search_layout"
+        android:layout_marginTop="26dp"
+        android:textColor="#F8F8ED"
         android:scrollbars="vertical" />
 
 
