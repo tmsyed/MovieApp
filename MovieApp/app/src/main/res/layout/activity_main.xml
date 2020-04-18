@@ -31,10 +31,11 @@
             android:layout_width="247dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
+            android:backgroundTint="@android:color/background_light"
             android:hint="@string/search_hint"
             android:inputType="text"
-            android:backgroundTint="@android:color/background_light"
-            android:textColor="@android:color/white"/>
+            android:textColor="@android:color/white"
+            android:textColorHint="#F3EFEF" />
 
         <Button
             android:id="@+id/search_button"
