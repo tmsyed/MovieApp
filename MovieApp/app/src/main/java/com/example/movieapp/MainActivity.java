@@ -144,6 +144,11 @@ public class MainActivity extends AppCompatActivity {
                                             }
                                             movieAdapter.notifyDataSetChanged();
                                         } catch (JSONException e) {
+                                            try {
+                                                Toast.makeText(MainActivity.this, response.getString("Error"), Toast.LENGTH_SHORT).show();
+                                            } catch (JSONException ex) {
+                                                ex.printStackTrace();
+                                            }
                                             e.printStackTrace();
                                         }
                                     }
